@@ -32,7 +32,7 @@
 	</properties>
 	<dependencies>
 
-		<!--  SPRING SECURITY
+		<!-- SPRING SECURITY -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -43,13 +43,13 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		SPRING VALIDATION
+				
+		<!-- SPRING VALIDATION -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		-->
+
 
 		<!-- THYMLEAF -->
 		<dependency>

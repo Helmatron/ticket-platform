@@ -38,10 +38,11 @@
 			<!-- LOGGED USER -->
 			<div class="container-fluid">
 				<div class="row justify-content-center">
-					<div class="ms-lg-3 px-3 text-info-emphasis border border-info opacity-25 rounded-2"
+					<div class="ms-lg-3 px-3 text-info-emphasis border border-info rounded-2"
 						style="padding: 6px; width: 200px;">
-						<div class="opacity-100">
-							<span class="me-2" sec:authentication="name"></span>
+						<div>
+							<span th:text="${#authentication.principal.name}">Nome</span>
+							<span class="me-2" th:text="${#authentication.principal.surname}">Cognome</span>
 							<span sec:authentication="principal.authorities"></span>
 						</div>
 					</div>
