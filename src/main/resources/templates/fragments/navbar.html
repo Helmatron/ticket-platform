@@ -3,8 +3,13 @@
 	<div class="container-fluid">
 		<div class="d-flex w-100 justify-content-between align-items-center">
 			<!-- TITLE -->
-			<a class="navbar-brand d-flex align-items-center" href="/"><span class="me-2"><img
-						th:src="@{/img/paperella.png}" alt="paperella"></span> My Ticket Platform </a>
+			<a class="navbar-brand d-flex align-items-center" sec:authorize="hasAuthority('ADMIN')"
+				href="/admin/index"><span class="me-2"><img th:src="@{/img/paperella.png}" alt="paperella"></span> My
+				Ticket Platform </a>
+
+			<a class="navbar-brand d-flex align-items-center" sec:authorize="hasAuthority('OPERATOR')"
+				href="/operator/index"><span class="me-2"><img th:src="@{/img/paperella.png}" alt="paperella"></span> My
+				Ticket Platform </a>
 
 			<!-- MASCOTTE -->
 			<div class="d-flex justify-content-center flex-grow-1 align-items-center">
@@ -18,37 +23,55 @@
 			</button>
 		</div>
 
-		<!-- MENU LIST -->
+		<!-- MENU COLLAPSE -->
 		<div class="collapse navbar-collapse justify-content-end text-center" id="navbarNavAltMarkup">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="/"><strong>Home</strong></a>
-				</li>
-				<li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
-					<a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Dashboard
-					</a>
-					<ul class="dropdown-menu text-center mb-3">
-						<li><a class="dropdown-item" href="/pizze/lista_pizze">Gestione Ticket</a></li>
-						<li><a class="dropdown-item" href="/offerte/lista_offerte">Gestione Operatori</a></li>
-					</ul>
-				</li>
-			</ul>
 
-			<!-- LOGGED USER -->
+			<!-- NAV ITEMS -->
 			<div class="container-fluid">
-				<div class="row justify-content-center">
-					<div class="ms-lg-3 px-3 text-info-emphasis border border-info rounded-2"
-						style="padding: 6px; width: 200px;">
-						<div>
-							<span th:text="${#authentication.principal.name}">Nome</span>
-							<span class="me-2" th:text="${#authentication.principal.surname}">Cognome</span>
-							<span sec:authentication="principal.authorities"></span>
+				<div class="row justify-content-center align-items-center">
+
+					<!-- COLLAPSE MENU (Visible only on small screens) -->
+					<div class="col-12 text-center 					custom-dropdown-menu">
+						<span class="nav-link d-lg-none mt-3">
+							<span style="color: blue;" th:text="${#authentication.principal.name}">Nome</span>
+							<span style="color: blue;" th:text="${#authentication.principal.surname}">Cognome</span>
+							<span style="color: blue;" sec:authentication="principal.authorities"></span>
+							<!-- Logout button -->
+						</span>
+						<a class="nav-link d-lg-none mt-3" style="color: red;" href="/logout"><strong>Logout</strong></a>
+					</div>
+					<!-- Home Link -->
+					<div class="col-12 text-center">
+						<a class="nav-link d-lg-none mt-3" href="/admin/index"
+							sec:authorize="hasAuthority('ADMIN')"><strong>Home</strong></a>
+						<a class="nav-link d-lg-none mt-3" href="/operator/index"
+							sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a>
+					</div>
+
+					<!-- DROPDOWN MENU LOGGED USER (Visible only on large screens) -->
+					<div class="col-auto text-center d-none d-lg-block">
+						<div class="dropdown">
+							<button class="btn btn-primary dropdown-toggle" type="button" id="loggedUserDropdown"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								<span th:text="${#authentication.principal.name}">Nome</span>
+								<span th:text="${#authentication.principal.surname}">Cognome</span>
+								<span sec:authentication="principal.authorities"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="loggedUserDropdown">
+								<!-- Logout button -->
+								<li><a style="color: red;" class="dropdown-item"
+										href="/logout"><strong>Logout</strong></a></li>
+								<!-- Home Link -->
+								<li><a class="dropdown-item" href="/admin/index"
+										sec:authorize="hasAuthority('ADMIN')"><strong>Home</strong></a></li>
+								<li><a class="dropdown-item" href="/operator/index"
+										sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a></li>
+							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-			<a href="/logout" class="btn btn-outline-danger btn-m ms-lg-3 mt-3 mt-lg-auto"><strong>Logout</strong></a>
 		</div>
+	</div>
 	</div>
 </nav>

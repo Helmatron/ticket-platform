@@ -10,6 +10,6 @@ import com.ticket.platform.model.Ticket;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 	
-	public List<Ticket> findByTitleTicket(String titleTicket);
+	public List<Ticket> findByTitleTicketContainingIgnoreCase(String titleTicket);
 	
 }

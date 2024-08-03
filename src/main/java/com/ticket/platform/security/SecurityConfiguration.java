@@ -11,16 +11,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-	@Bean
-	SecurityFilterChain filterDashboard(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests()
-		.requestMatchers("/**").permitAll()
-		.and().formLogin()
-		.and().logout()
-		.and().exceptionHandling()
-		;
-		return http.build();
-	}
+	 @Bean
+	    SecurityFilterChain filterDashboard(HttpSecurity http) throws Exception {
+		 
+	        http.authorizeHttpRequests()
+	        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+	        .requestMatchers("/operator/**").hasAuthority("OPERATOR")
+	        .requestMatchers("/resources/**", "/css/**", "/js/**", "/login").permitAll()
+	        .anyRequest().authenticated()
+	        .and().formLogin().permitAll().defaultSuccessUrl("/default", true)
+	        .and().logout().permitAll();
+	 
+	        return http.build();
+	    }
 	
 	@Bean
 	 DatabaseUserDetailsService userDetailsService() {

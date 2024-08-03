@@ -14,7 +14,6 @@ main {
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	flex: 1;
 }
 
 footer {
@@ -28,6 +27,24 @@ footer {
 
 /* NAVBAR */
 .my-navbar {
-	background-color: rgba(212, 255, 248, 0.541);
+	background-color: rgb(232, 255, 251);
 	box-shadow: 0px 4px 8px 0px rgba(170, 170, 170, 0.329);
+}
+
+/* Stato aperto */
+.stato-aperto {
+	font-weight: 700;
+    color: green;
+}
+
+/* Stato in lavorazione */
+.stato-in-lavorazione {
+	font-weight: 700;
+    color: orange;
+}
+
+/* Stato chiuso */
+.stato-chiuso {
+	font-weight: 700;
+    color: red;
 }
