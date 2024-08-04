@@ -1,35 +1,50 @@
 package com.ticket.platform.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ticket.platform.model.Ticket;
+import com.ticket.platform.model.User;
 import com.ticket.platform.repository.TicketRepository;
+import com.ticket.platform.repository.UserRepository;
 
 import io.micrometer.common.util.StringUtils;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 
 @Controller
 public class TicketController {
 
 	@Autowired
 	private TicketRepository ticketRepository;
+	@Autowired
+	private UserRepository userRepository;
 
 	// DETTAGLI TICKET
 	@GetMapping("/admin/ticket/dettagli_ticket/{id}")
 	public String findPizzaById(@PathVariable("id") Long id, Model model) {
 		Ticket ticket = ticketRepository.getReferenceById(id);
 		if (ticket != null) {
+
+			List<Ticket> tickets = ticketRepository.findAll();
+			model.addAttribute("list", tickets);
+
 			model.addAttribute("ticket", ticket);
 			model.addAttribute("findTicketById", true);
 			return "/admin/ticket/dettagli_ticket";
+
 		} else {
 
 			return "redirect:/admin/index";
@@ -56,6 +71,94 @@ public class TicketController {
 
 		return "/admin/index";
 	}
-	
-	//
+
+	// CREA NUOVO TICKET
+	@GetMapping("/admin/ticket/nuovo_ticket")
+	public String creaTicket(Model model) {
+
+		model.addAttribute("ticket", new Ticket());
+		model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+
+		return "admin/ticket/nuovo_ticket";
+	}
+
+	@PostMapping("/admin/ticket/nuovo_ticket")
+	public String store(@Valid @ModelAttribute("ticket") Ticket formTicket,
+			@RequestParam(name = "operatorId", required = false) Long operatorId, BindingResult bindingResult,
+			Model model) {
+
+		if (bindingResult.hasErrors() || operatorId == null) {
+			if (operatorId == null) {
+				model.addAttribute("operatorError", "Devi selezionare un operatore.");
+			}
+			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			return "admin/ticket/nuovo_ticket";
+		}
+
+		Optional<User> selectedOperatorId = userRepository.findById(operatorId);
+		if (!selectedOperatorId.isPresent()) {
+			bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
+			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			return "admin/ticket/nuovo_ticket";
+		}
+		User selectedOperator = selectedOperatorId.get();
+		formTicket.setUser(selectedOperator);
+
+		ticketRepository.save(formTicket);
+		return "redirect:/admin/index";
+	}
+
+	// MODIFICA TICKET
+	@GetMapping("/admin/ticket/edit_ticket/{id}")
+	public String editTicket(@PathVariable("id") Long id, Model model) {
+
+		Optional<Ticket> optionalTicket = ticketRepository.findById(id);
+		model.addAttribute("ticket", ticketRepository.findById(id).get());
+
+		model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+
+		return "admin/ticket/edit_ticket";
+	}
+
+	@PostMapping("/admin/ticket/update_ticket")
+	public String updateTicket(@Valid @ModelAttribute("ticket") Ticket formTicket,
+			@RequestParam(name = "operatorId", required = false) Long operatorId, BindingResult bindingResult,
+			Model model) {
+
+		if (bindingResult.hasErrors() || operatorId == null) {
+			if (operatorId == null) {
+				model.addAttribute("operatorError", "Devi selezionare un operatore.");
+			}
+			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			return "admin/ticket/edit_ticket";
+		}
+
+		Optional<User> selectedOperator = userRepository.findById(operatorId);
+		if (!selectedOperator.isPresent()) {
+			bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
+			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			return "admin/ticket/edit_ticket";
+		}
+
+		formTicket.setUser(selectedOperator.get());
+		ticketRepository.save(formTicket);
+		return "redirect:/admin/index";
+	}
+
+	// DELETE TICKET
+
+	@DeleteMapping("/admin/ticket/edit_ticket/{id}")
+	@Transactional
+	public String deleteTicket(@PathVariable("id") Long id, Model model) {
+		Optional<Ticket> optionalTicket = ticketRepository.findById(id);
+		if (optionalTicket.isPresent()) {
+			Ticket ticket = optionalTicket.get();
+			ticketRepository.delete(ticket); // La configurazione CascadeType.ALL si occuperà di eliminare le note
+		} else {
+			model.addAttribute("error", "Il ticket non esiste.");
+			return "redirect:/admin/index";
+		}
+		return "redirect:/admin/index";
+	}
+
 }

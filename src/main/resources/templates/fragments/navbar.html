@@ -38,7 +38,8 @@
 							<span style="color: blue;" sec:authentication="principal.authorities"></span>
 							<!-- Logout button -->
 						</span>
-						<a class="nav-link d-lg-none mt-3" style="color: red;" href="/logout"><strong>Logout</strong></a>
+						<a class="nav-link d-lg-none mt-3" style="color: red;"
+							href="/logout"><strong>Logout</strong></a>
 					</div>
 					<!-- Home Link -->
 					<div class="col-12 text-center">
@@ -48,27 +49,36 @@
 							sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a>
 					</div>
 
-					<!-- DROPDOWN MENU LOGGED USER (Visible only on large screens) -->
-					<div class="col-auto text-center d-none d-lg-block">
-						<div class="dropdown">
-							<button class="btn btn-primary dropdown-toggle" type="button" id="loggedUserDropdown"
-								data-bs-toggle="dropdown" aria-expanded="false">
-								<span th:text="${#authentication.principal.name}">Nome</span>
-								<span th:text="${#authentication.principal.surname}">Cognome</span>
-								<span sec:authentication="principal.authorities"></span>
-							</button>
-							<ul class="dropdown-menu" aria-labelledby="loggedUserDropdown">
-								<!-- Logout button -->
-								<li><a style="color: red;" class="dropdown-item"
-										href="/logout"><strong>Logout</strong></a></li>
-								<!-- Home Link -->
-								<li><a class="dropdown-item" href="/admin/index"
-										sec:authorize="hasAuthority('ADMIN')"><strong>Home</strong></a></li>
-								<li><a class="dropdown-item" href="/operator/index"
-										sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a></li>
-							</ul>
+					<!-- LOGGED USER only large screen -->
+					<div class="container d-none d-lg-block me-3">
+						<div class="row justify-content-end align-items-center">
+							<div class="col-auto d-flex align-items-center">
+								<div class="me-3" style="color: blue; white-space: nowrap;">
+									<span th:text="${#authentication.principal.name}">Nome</span>
+									<span th:text="${#authentication.principal.surname}">Cognome</span>
+									<span sec:authentication="principal.authorities"></span>
+								</div>
+								<!-- DROPDOWN MENU LOGGED USER (Visible only on large screens) -->
+								<div class="dropdown">
+									<button class="btn btn-primary dropdown-toggle" type="button"
+										id="loggedUserDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+										<strong>Menu</strong>
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="loggedUserDropdown">
+										<!-- Logout button -->
+										<li><a style="color: red;" class="dropdown-item"
+												href="/logout"><strong>Logout</strong></a></li>
+										<!-- Home Link -->
+										<li><a class="dropdown-item" href="/admin/index"
+												sec:authorize="hasAuthority('ADMIN')"><strong>Home</strong></a></li>
+										<li><a class="dropdown-item" href="/operator/index"
+												sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>

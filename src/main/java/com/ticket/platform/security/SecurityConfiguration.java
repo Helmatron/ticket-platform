@@ -17,6 +17,7 @@ public class SecurityConfiguration {
 	        http.authorizeHttpRequests()
 	        .requestMatchers("/admin/**").hasAuthority("ADMIN")
 	        .requestMatchers("/operator/**").hasAuthority("OPERATOR")
+	        .requestMatchers("/note/**").authenticated()
 	        .requestMatchers("/resources/**", "/css/**", "/js/**", "/login").permitAll()
 	        .anyRequest().authenticated()
 	        .and().formLogin().permitAll().defaultSuccessUrl("/default", true)

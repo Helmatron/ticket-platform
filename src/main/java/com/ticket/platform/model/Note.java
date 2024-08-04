@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
@@ -39,11 +39,11 @@ public class Note {
 	private LocalDateTime creationDate;
 	
 	@ManyToOne
-	@JoinTable(name = "id_ticket")
+	@JoinColumn(name = "ticket_id")
 	private Ticket ticket;
 	
 	@ManyToOne
-	@JoinTable(name = "id_user")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public Long getId() {

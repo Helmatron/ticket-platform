@@ -37,7 +37,7 @@
 			<div class="container-fluid">
 				<div class="text-center mt-5" th:if="${#lists.isEmpty(list)}">
 					<div class="alert alert-warning" role="alert">
-						Nessun Ticket trovato
+						Nessun ticket trovato
 					</div>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 				<!-- TITLE -->
 				<div class="container mb-4">
 					<div class="row align-items-center justify-content-between">
-						<div class="col-sm-2 col-lg-4 d-flex align-items-center justify-content-between">
+						<div class="col-sm-12 col-lg-4 d-flex align-items-center justify-content-between">
 							<h1 class="me-2">Elenco Ticket</h1>
 							<!-- Button trigger collapse -->
 							<button class="btn btn-primary d-lg-none" type="button" data-bs-toggle="collapse"
@@ -67,24 +67,39 @@
 								</form>
 							</div>
 						</div>
+
+						<div class="col-sm-12 col-lg-2 mt-lg-0 mt-3 d-flex justify-content-start justify-content-lg-end">
+							<a th:href="@{/admin/ticket/nuovo_ticket}" class="btn btn-primary">Nuovo Ticket</a>
+						</div>
 					</div>
 				</div>
+
+
 
 				<!-- TABELLA ELENCO -->
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>Titolo</th>
-							<th>Data Inizio</th>
+							<th>Stato</th>
 							<th>Data Fine</th>
+							<th>Operatore</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="ticket : ${list}">
 							<td> <a th:href="@{/admin/ticket/dettagli_ticket/{id}(id=${ticket.id})}"
 									th:text="${ticket.titleTicket}">Titolo</a></td>
-							<td th:text="${#temporals.format(ticket.startDate, 'dd-MM-yyyy')}">Data inizio</td>
-							<td th:text="${#temporals.format(ticket.endDate, 'dd-MM-yyyy')}">Datat fine</td>
+							<td>
+								<span th:class="'stato-' + ${ticket.workProgress.toLowerCase().replace(' ', '-')}">
+									<span th:text="${ticket.workProgress}"></span>
+								</span>
+							</td>
+							<td th:text=" ${#temporals.format(ticket.endDate, 'dd-MM-yyyy' )}">Datat fine
+							</td>
+							<td><span th:text="${ticket.user.name}">Nome</span>
+								<span th:text="${ticket.user.surname}">Cognome</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -98,11 +113,11 @@
 
 	</div>
 
-	<!-- BOOTSTRAP JS -->
-	<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-
 	<!-- PERSONAL JS -->
 	<script th:src="@{/JS/myscript.js}"></script>
+
+	<!-- BOOTSTRAP JS -->
+	<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

@@ -1,16 +1,20 @@
 package com.ticket.platform.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -36,12 +40,12 @@ public class Ticket {
 	@Column(name = "description_ticket", nullable = false)
 	private String descriptionTicket;
 
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "La data di inizio non può essere Null")
 	@Column(name = "start_date", nullable = false)
 	private LocalDate startDate;
 
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "La data di fine non può essere Null")
 	@Column(name = "end_date", nullable = false)
 	private LocalDate endDate;
@@ -51,11 +55,11 @@ public class Ticket {
 	@Column(name = "work_progress", nullable = false)
 	private String workProgress = "APERTO";
 
-	@OneToMany(mappedBy = "ticket")
-	private List<Note> notes;
+	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Note> notes = new ArrayList<>();
 
 	@ManyToOne
-	@JoinTable(name = "id_user")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public Long getId() {
