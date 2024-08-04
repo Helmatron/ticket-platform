@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>My Ticket Platform</title>
+	<link rel="icon" th:href="@{/img/paperella.png}" type="image/png">
+	<link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/mystyle.css}">
+	<script th:src="@{/JS/myscript.js}"></script>
+</head>
+
+<body>
+	<div class="wrapper title-top-margin">
+		<header>
+			<div th:insert="~{fragments/navbar :: navbar}"></div>
+		</header>
+		<main class="container mt-5">
+			<div class="container-fluid">
+				<div class="row my-5">
+					<h1 class="text-center">Crea una nota</h1>
+				</div>
+				<div class="d-flex justify-content-center">
+					<div class="row col-12 col-sm-6 col-md-4 col-lg-5">
+						<form id="note-form" th:object="${note}"
+							th:action="@{/note/nuova_nota(ticketId=${note.ticket.id})}" method="post"
+							class="needs-validation" novalidate>
+							<input type="hidden" th:field="*{ticket.id}" />
+							<input type="hidden" th:field="*{user.id}" />
+							<div class="mb-3">
+								<label for="title" class="form-label"><strong>Titolo</strong></label>
+								<input type="text" class="form-control" id="title" placeholder="Titolo della nota"
+									th:field="*{titleNote}" required>
+								<div class="invalid-feedback">Inserisci il titolo della nota.</div>
+							</div>
+							<label for="description" class="form-label"><strong>Descrizione</strong></label>
+							<div class="form-floating mb-3">
+								<textarea id="description" th:field="*{descriptionNote}" class="form-control"
+									placeholder="Descrizione della nota" style="height: 200px" required></textarea>
+								<label for="description">Descrizione della nota</label>
+								<div class="invalid-feedback">Inserisci la descrizione della nota.</div>
+							</div>
+							<div class="d-flex justify-content-between my-4">
+								<a th:href="@{/admin/ticket/dettagli_ticket/{id}(id=${note.ticket.id})}"
+									class="btn btn-primary">Indietro</a>
+								<button type="submit" class="btn btn-success">Salva Nota</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+		<footer>
+			<div th:insert="~{fragments/footer :: footer}"></div>
+		</footer>
+	</div>
+	<script th:src="@{/JS/myscript.js}"></script>
+	<script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

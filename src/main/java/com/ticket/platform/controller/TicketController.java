@@ -22,7 +22,6 @@ import com.ticket.platform.repository.UserRepository;
 import io.micrometer.common.util.StringUtils;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 
 @Controller
 public class TicketController {
@@ -112,9 +111,7 @@ public class TicketController {
 	@GetMapping("/admin/ticket/edit_ticket/{id}")
 	public String editTicket(@PathVariable("id") Long id, Model model) {
 
-		Optional<Ticket> optionalTicket = ticketRepository.findById(id);
 		model.addAttribute("ticket", ticketRepository.findById(id).get());
-
 		model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
 
 		return "admin/ticket/edit_ticket";

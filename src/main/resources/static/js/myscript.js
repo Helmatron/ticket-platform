@@ -40,3 +40,31 @@ function resetFormAdminHome() {
 			}, false)
 		})
 })()
+
+// Avviso elimina ticket
+function confirmDelete() {
+	return confirm('Sei sicuro di voler eliminare questo ticket? Questa azione non può essere annullata.');
+}
+
+// Descrizione a comparsa della nota
+document.addEventListener('DOMContentLoaded', function() {
+	var noteModal = document.getElementById('noteModal');
+	noteModal.addEventListener('show.bs.modal', function(event) {
+		var button = event.relatedTarget;
+		var description = button.getAttribute('data-note-description');
+		var modalBody = noteModal.querySelector('.modal-body #noteDescription');
+		modalBody.textContent = description;
+	});
+
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+	var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl)
+	})
+});
+
+// Avviso prima di eliminare la nota
+function deleteNote(noteId) {
+	if (confirm('Sei sicuro di voler eliminare questa nota?')) {
+		window.location.href = '/note/elimina_nota/' + noteId;
+	}
+}

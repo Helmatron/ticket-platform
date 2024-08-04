@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -33,7 +32,7 @@ public class Note {
 	@Column(name = "description_note", nullable = false)
 	private String descriptionNote;
 	
-	@NotNull(message = "La data e l'ora di creazione non possono essere Null")
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	@Column(name = "creation_date")
 	private LocalDateTime creationDate;

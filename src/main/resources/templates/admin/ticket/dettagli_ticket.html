@@ -102,9 +102,10 @@
 										<a th:href="@{/admin/ticket/edit_ticket/{id}(id=${ticket.id})}"
 											class="btn btn-warning" style="color: white;">Modifica</a>
 										<form th:action="@{/admin/ticket/edit_ticket/{id}(id=${ticket.id})}"
-											method="post">
+											method="post" onsubmit="return confirmDelete();">
 											<input type="hidden" name="_method" value="delete">
-											<button type="submit" class="btn btn-danger">Elimina</button>
+											<button type="submit" class="btn btn-danger"
+												id="delete-ticket-button">Elimina</button>
 										</form>
 									</div>
 								</div>
@@ -143,45 +144,58 @@
 													<th>Titolo</th>
 													<th>Autore</th>
 													<th>Data</th>
+													<th>Delete</th>
 												</tr>
 											</thead>
 											<tbody>
-												<tr th:each="ticket : ${list}">
-													<td colspan="3">
-														<table class="table">
-															<tbody>
-																<tr th:each="note : ${ticket.notes}">
-																	<td> <a th:text="${note.titleNote}">Titolo</a></td>
-																	<td th:text="${note.user.name}">Autore</td>
-																	<td
-																		th:text="${#temporals.format(note.creationDate, 'dd-MM-yyyy')}">
-																		Data</td>
-																</tr>
-															</tbody>
-														</table>
+												<tr th:each="note : ${ticket.notes}">
+													<td>
+														<a href="#" th:text="${note.titleNote}" data-bs-toggle="modal"
+															data-bs-target="#noteModal"
+															th:data-note-description="${note.descriptionNote}"></a>
+													</td>
+													<td th:text="${note.user.name}"></td>
+													<td th:text="${#temporals.format(note.creationDate, 'dd-MM-yyyy')}">
+													</td>
+													<td>
+														<button type="button" class="btn btn-danger btn-sm"
+															th:attr="onclick='deleteNote(' + ${note.id} + ')'">
+															<i class="bi bi-x-circle"></i>
+														</button>
 													</td>
 												</tr>
 											</tbody>
 										</table>
 									</div>
 
-
 									<hr>
 
 									<!-- BOTTONE -->
 									<div class="d-flex justify-content-center mt-auto">
-										<a th:href="@{/admin/index}" class="btn btn-primary">Nuova nota</a>
+										<a th:href="@{/note/nuova_nota(ticketId=${ticket.id})}"
+											class="btn btn-primary">Crea Nuova Nota</a>
 									</div>
-								</div>
-							</div>
-						</div>
 
-					</div>
-				</div>
-			</div>
-
-
-
+									<!-- MODAL -->
+									<div class="modal fade" id="noteModal" tabindex="-1"
+										aria-labelledby="noteModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="noteModalLabel">Descrizione Nota</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal"
+														aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													<p id="noteDescription"></p>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary"
+														data-bs-dismiss="modal">Chiudi</button>
+												</div>
+											</div>
+										</div>
+									</div>
 		</main>
 
 		<!-- FOOTER -->
