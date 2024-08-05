@@ -139,9 +139,27 @@ public class TicketController {
 			return "ticket/edit_ticket";
 		}
 
+		// ricerca del ticket esistente
+		Optional<Ticket> existingTicketOpt = ticketRepository.findById(formTicket.getId());
+		if (!existingTicketOpt.isPresent()) {
+			bindingResult.rejectValue("id", "error.ticket", "Ticket non trovato.");
+			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			return "ticket/edit_ticket";
+		}
+
+		Ticket existingTicket = existingTicketOpt.get();
+
+		// Mantenere le note esistenti
+		formTicket.setNotes(existingTicket.getNotes());
+
+		existingTicket.setTitleTicket(formTicket.getTitleTicket());
+		existingTicket.setDescriptionTicket(formTicket.getDescriptionTicket());
+
 		formTicket.setUser(selectedOperator.get());
 		ticketRepository.save(formTicket);
-		return "redirect:/admin/index";
+		
+		// Redirect alla pagina di dettaglio del ticket aggiornato
+	    return "redirect:/ticket/dettagli_ticket/" + existingTicket.getId();
 	}
 
 	// DELETE TICKET

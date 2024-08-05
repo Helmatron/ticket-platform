@@ -18,8 +18,8 @@ function updateOperator(element) {
 }
 
 // RESET FORM E VAI A HOME ADMIN
-function resetFormAdminHome() {
-	window.location.href = "/admin/index";
+function resetFormTicketReturn(ticketId) {
+    window.location.href = "/ticket/dettagli_ticket/" + ticketId;
 }
 
 // Disabilita l'invio del form se ci sono campi non validi
