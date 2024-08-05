@@ -61,6 +61,35 @@
 								<div th:if="${titleError}" class="text-danger mt-2" th:text="${titleError}"></div>
 							</div>
 
+							<!-- CATEGORIA -->
+							<div class="mb-3">
+								<label for="category"><strong>Categoria</strong></label>
+								<div class="input-group">
+									<div class="dropdown">
+										<button class="btn btn-primary dropdown-toggle" type="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+											Seleziona Categoria
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+											<li th:each="category : ${categories}">
+												<button class="dropdown-item" type="button"
+													th:data-name="${category.name}" th:data-id="${category.id}"
+													th:text="${category.name}"
+													onclick="updateCategory(this)">Categoria</button>
+											</li>
+										</ul>
+									</div>
+									<input type="text" class="form-control" id="categoryNameInput" name="categoryName"
+										th:value="*{category.name}" readonly required>
+									<input type="hidden" id="categoryIdInput" name="categoryId"
+										th:value="*{category.id}">
+									<div class="invalid-feedback">
+										Seleziona una categoria.
+									</div>
+								</div>
+								<div th:if="${categoryError}" class="text-danger mt-2" th:text="${categoryError}"></div>
+							</div>
+
 							<!-- DESCRIZIONE -->
 							<label for="descriptionTicket" class="form-label"><strong>Descrizione</strong></label>
 							<div class="form-floating mb-3">

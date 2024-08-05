@@ -26,6 +26,12 @@ function resetFormTicketReturn(ticketId) {
 function resetFormAdminHome() {
 	window.location.href = "/admin/index";
 }
+
+// REST FORM USER RETURN
+function resetFormUserReturn(userId) {
+	window.location.href = '/operator/dettagli_operatore/' + userId;
+}
+
 // Disabilita l'invio del form se ci sono campi non validi
 (function() {
 	'use strict'
@@ -71,4 +77,10 @@ function deleteNote(noteId) {
 	if (confirm('Sei sicuro di voler eliminare questa nota?')) {
 		window.location.href = '/note/elimina_nota/' + noteId;
 	}
+}
+
+// selettore categorie
+function updateCategory(element) {
+	document.getElementById('categoryNameInput').value = element.getAttribute('data-name');
+	document.getElementById('categoryIdInput').value = element.getAttribute('data-id');
 }

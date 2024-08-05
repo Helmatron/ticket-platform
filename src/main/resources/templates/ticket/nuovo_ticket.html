@@ -46,8 +46,8 @@
 					<div class="row col-12 col-sm-6 col-md-4 col-lg-5">
 
 						<!-- FORM -->
-						<form id="ticket-form" th:object="${ticket}" th:action="@{/ticket/nuovo_ticket}"
-							method="post" class="needs-validation" novalidate>
+						<form id="ticket-form" th:object="${ticket}" th:action="@{/ticket/nuovo_ticket}" method="post"
+							class="needs-validation" novalidate>
 
 							<!-- TITOLO -->
 							<div class="mb-3">
@@ -57,6 +57,35 @@
 								<div class="invalid-feedback">
 									Inserisci il titolo del ticket.
 								</div>
+							</div>
+
+							<!-- CATEGORIA -->
+							<div class="mb-3">
+								<label for="category"><strong>Categoria</strong></label>
+								<div class="input-group">
+									<div class="dropdown">
+										<button class="btn btn-primary dropdown-toggle" type="button"
+											data-bs-toggle="dropdown" aria-expanded="false">
+											Seleziona Categoria
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+											<li th:each="category : ${categories}">
+												<button class="dropdown-item" type="button"
+													th:data-name="${category.name}" th:data-id="${category.id}"
+													th:text="${category.name}"
+													onclick="updateCategory(this)">Categoria</button>
+											</li>
+										</ul>
+									</div>
+									<input type="text" class="form-control" id="categoryNameInput" name="categoryName"
+										readonly required>
+									<input type="hidden" id="categoryIdInput" name="categoryId">
+									<div class="invalid-feedback">
+										Seleziona una categoria.
+									</div>
+									<!-- messaggio di errore -->
+								</div>
+								<div th:if="${categoryError}" class="text-danger mt-2" th:text="${categoryError}"></div>
 							</div>
 
 							<!-- DESCRIZIONE -->

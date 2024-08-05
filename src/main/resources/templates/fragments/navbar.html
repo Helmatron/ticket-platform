@@ -32,7 +32,7 @@
 				<div class="row justify-content-center align-items-center">
 
 					<!-- COLLAPSE MENU (Visible only on small screens) -->
-					<div class="col-12 text-center 					custom-dropdown-menu">
+					<div class="col-12 text-center custom-dropdown-menu">
 						<span class="nav-link d-lg-none mt-3">
 							<span style="color: blue;" th:text="${#authentication.principal.name}">Nome</span>
 							<span style="color: blue;" th:text="${#authentication.principal.surname}">Cognome</span>
@@ -46,7 +46,7 @@
 					<div class="col-12 text-center">
 						<a class="nav-link d-lg-none mt-3" href="/admin/index"
 							sec:authorize="hasAuthority('ADMIN')"><strong>Home</strong></a>
-						<a class="dropdown-item" href="/operator/lista_operatori"
+						<a class="dropdown-item d-lg-none mt-3" href="/operator/lista_operatori"
 							sec:authorize="hasAuthority('ADMIN')"><strong>Operatori</strong></a>
 						<a class="nav-link d-lg-none mt-3"
 							th:href="@{/operator/dettagli_operatore/{id}(id=${operatorId})}"

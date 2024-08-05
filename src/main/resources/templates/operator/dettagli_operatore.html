@@ -146,8 +146,9 @@
 										<thead>
 											<tr>
 												<th>Titolo</th>
-												<th>Stato</th>
+												<th>Categoria</th>
 												<th>Data Fine</th>
+												<th>Stato</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -156,10 +157,11 @@
 													<a th:href="@{/ticket/dettagli_ticket/{id}(id=${ticket.id})}"
 														th:text="${ticket.titleTicket}"></a>
 												</td>
+												<td th:text="${ticket.category.name}">Categoria</td>
+												<td th:text="${#temporals.format(ticket.endDate, 'dd-MM-yyyy')}"></td>
 												<td><span
 														th:class="'stato-' + ${ticket.workProgress.toLowerCase().replace(' ', '-')}"
 														th:text="${ticket.workProgress}"></span></td>
-												<td th:text="${#temporals.format(ticket.endDate, 'dd-MM-yyyy')}"></td>
 											</tr>
 										</tbody>
 									</table>

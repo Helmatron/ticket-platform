@@ -47,6 +47,9 @@
 									<div class="row">
 										<div class="col-6">
 											<h5 class="card-title" th:text="${ticket.titleTicket}">Titolo</h5>
+											<p><strong>Categoria:</strong> <span
+													th:text="${ticket.category.name}">Categoria</span></p>
+
 										</div>
 										<div class="col-6 text-end">
 											<span><strong>Stato:</strong> </span>
@@ -92,16 +95,27 @@
 
 								<!-- BOTTONE -->
 								<div class="d-flex justify-content-between mt-auto mx-3">
-									<a th:href="@{/admin/index}" class="btn btn-primary"
-										sec:authorize="hasAuthority('ADMIN')">Indietro</a>
-									<a th:href="@{/ticket/edit_ticket/{id}(id=${ticket.id})}" class="btn btn-warning"
-										style="color: white;">Modifica</a>
-									<form th:action="@{/ticket/edit_ticket/{id}(id=${ticket.id})}" method="post"
-										onsubmit="return confirmDelete();">
-										<input type="hidden" name="_method" value="delete">
-										<button type="submit" class="btn btn-danger" id="delete-ticket-button"
-											sec:authorize="hasAuthority('ADMIN')">Elimina</button>
-									</form>
+									<div class="d-flex w-100">
+										<div class="d-flex justify-content-between w-100"
+											sec:authorize="hasAuthority('ADMIN')">
+											<a th:href="@{/admin/index}" class="btn btn-primary">Indietro</a>
+											<a th:href="@{/ticket/edit_ticket/{id}(id=${ticket.id})}"
+												class="btn btn-warning" style="color: white;">Modifica</a>
+											<form th:action="@{/ticket/edit_ticket/{id}(id=${ticket.id})}" method="post"
+												onsubmit="return confirmDelete();" class="d-inline">
+												<input type="hidden" name="_method" value="delete">
+												<button type="submit" class="btn btn-danger"
+													id="delete-ticket-button">Elimina</button>
+											</form>
+										</div>
+										<div class="d-flex justify-content-between w-100"
+											sec:authorize="hasAuthority('OPERATOR')">
+											<a class="btn btn-primary"
+												th:onclick="'resetFormUserReturn(' + ${user.id} + ')'">Indietro</a>
+											<a th:href="@{/ticket/edit_ticket/{id}(id=${ticket.id})}"
+												class="btn btn-warning" style="color: white;">Modifica</a>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

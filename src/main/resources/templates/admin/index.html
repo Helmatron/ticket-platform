@@ -68,7 +68,8 @@
 							</div>
 						</div>
 
-						<div class="col-sm-12 col-lg-2 mt-lg-0 mt-3 d-flex justify-content-start justify-content-lg-end">
+						<div
+							class="col-sm-12 col-lg-2 mt-lg-0 mt-3 d-flex justify-content-start justify-content-lg-end">
 							<a th:href="@{/ticket/nuovo_ticket}" class="btn btn-primary">Nuovo Ticket</a>
 						</div>
 					</div>
@@ -81,24 +82,27 @@
 					<thead>
 						<tr>
 							<th>Titolo</th>
-							<th>Stato</th>
+							<th>Categoria</th>
 							<th>Data Fine</th>
 							<th>Operatore</th>
+							<th>Stato</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="ticket : ${list}">
 							<td> <a th:href="@{/ticket/dettagli_ticket/{id}(id=${ticket.id})}"
 									th:text="${ticket.titleTicket}">Titolo</a></td>
-							<td>
-								<span th:class="'stato-' + ${ticket.workProgress.toLowerCase().replace(' ', '-')}">
-									<span th:text="${ticket.workProgress}"></span>
-								</span>
-							</td>
+
+							<td th:text="${ticket.category.name}">Categoria</td>
 							<td th:text=" ${#temporals.format(ticket.endDate, 'dd-MM-yyyy' )}">Datat fine
 							</td>
 							<td><span th:text="${ticket.user.name}">Nome</span>
 								<span th:text="${ticket.user.surname}">Cognome</span>
+							</td>
+							<td>
+								<span th:class="'stato-' + ${ticket.workProgress.toLowerCase().replace(' ', '-')}">
+									<span th:text="${ticket.workProgress}"></span>
+								</span>
 							</td>
 						</tr>
 					</tbody>

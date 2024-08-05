@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ticket.platform.model.Category;
 import com.ticket.platform.model.Ticket;
 import com.ticket.platform.model.User;
+import com.ticket.platform.repository.CategoryRepository;
 import com.ticket.platform.repository.TicketRepository;
 import com.ticket.platform.repository.UserRepository;
 
@@ -35,6 +37,8 @@ public class TicketController {
 	private TicketRepository ticketRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	// DETTAGLI TICKET
 	@GetMapping("/dettagli_ticket/{id}")
@@ -44,20 +48,18 @@ public class TicketController {
 
 			List<Ticket> tickets = ticketRepository.findAll();
 			model.addAttribute("list", tickets);
-
 			model.addAttribute("ticket", ticket);
 			model.addAttribute("findTicketById", true);
 
-			// Aggiungi l'operatorId al modello per far funzionare tasto home
+			// Aggiungi l'utente corrente al modello
 			Optional<User> userOpt = userRepository.findByMail(principal.getName());
 			if (userOpt.isPresent()) {
-				model.addAttribute("operatorId", userOpt.get().getId());
+				model.addAttribute("user", userOpt.get());
 			}
 
 			return "ticket/dettagli_ticket";
 
 		} else {
-
 			return "redirect:/admin/index";
 		}
 	}
@@ -89,31 +91,48 @@ public class TicketController {
 
 		model.addAttribute("ticket", new Ticket());
 		model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+		model.addAttribute("categories", categoryRepository.findAll());
 
 		return "/ticket/nuovo_ticket";
 	}
 
 	@PostMapping("/nuovo_ticket")
 	public String store(@Valid @ModelAttribute("ticket") Ticket formTicket,
-			@RequestParam(name = "operatorId", required = false) Long operatorId, BindingResult bindingResult,
+			@RequestParam(name = "operatorId", required = false) Long operatorId,
+			@RequestParam(name = "categoryId", required = false) Long categoryId, BindingResult bindingResult,
 			Model model) {
 
-		if (bindingResult.hasErrors() || operatorId == null) {
+		if (bindingResult.hasErrors() || operatorId == null || categoryId == null) {
 			if (operatorId == null) {
 				model.addAttribute("operatorError", "Devi selezionare un operatore.");
 			}
+			if (categoryId == null) {
+				model.addAttribute("categoryError", "Devi selezionare una categoria.");
+			}
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			model.addAttribute("categories", categoryRepository.findAll());
 			return "/ticket/nuovo_ticket";
 		}
 
 		Optional<User> selectedOperatorId = userRepository.findById(operatorId);
-		if (!selectedOperatorId.isPresent()) {
-			bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
+		Optional<Category> selectedCategoryId = categoryRepository.findById(categoryId);
+
+		if (!selectedOperatorId.isPresent() || !selectedCategoryId.isPresent()) {
+			if (!selectedOperatorId.isPresent()) {
+				bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
+			}
+			if (!selectedCategoryId.isPresent()) {
+				bindingResult.rejectValue("category", "error.ticket", "Categoria non trovata.");
+			}
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			model.addAttribute("categories", categoryRepository.findAll());
 			return "/ticket/nuovo_ticket";
 		}
+
 		User selectedOperator = selectedOperatorId.get();
+		Category selectedCategory = selectedCategoryId.get();
 		formTicket.setUser(selectedOperator);
+		formTicket.setCategory(selectedCategory);
 
 		ticketRepository.save(formTicket);
 		return "redirect:/admin/index";
@@ -137,6 +156,7 @@ public class TicketController {
 			if (isAdmin) {
 				List<User> users = userRepository.findByRolesName("OPERATOR");
 				model.addAttribute("users", users);
+				model.addAttribute("categories", categoryRepository.findAll());
 			}
 
 			// Aggiungi l'operatorId al modello per far funzionare tasto home
@@ -153,21 +173,34 @@ public class TicketController {
 
 	@PostMapping("/edit_ticket")
 	public String updateTicket(@Valid @ModelAttribute("ticket") Ticket formTicket,
-			@RequestParam(name = "operatorId", required = false) Long operatorId, BindingResult bindingResult,
+			@RequestParam(name = "operatorId", required = false) Long operatorId,
+			@RequestParam(name = "categoryId", required = false) Long categoryId, BindingResult bindingResult,
 			Model model) {
 
-		if (bindingResult.hasErrors() || operatorId == null) {
+		if (bindingResult.hasErrors() || operatorId == null || categoryId == null) {
 			if (operatorId == null) {
 				model.addAttribute("operatorError", "Devi selezionare un operatore.");
 			}
+			if (categoryId == null) {
+				model.addAttribute("categoryError", "Devi selezionare una categoria.");
+			}
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			model.addAttribute("categories", categoryRepository.findAll());
 			return "ticket/edit_ticket";
 		}
 
 		Optional<User> selectedOperator = userRepository.findById(operatorId);
-		if (!selectedOperator.isPresent()) {
-			bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
+		Optional<Category> selectedCategory = categoryRepository.findById(categoryId);
+
+		if (!selectedOperator.isPresent() || !selectedCategory.isPresent()) {
+			if (!selectedOperator.isPresent()) {
+				bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
+			}
+			if (!selectedCategory.isPresent()) {
+				bindingResult.rejectValue("category", "error.ticket", "Categoria non trovata.");
+			}
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			model.addAttribute("categories", categoryRepository.findAll());
 			return "ticket/edit_ticket";
 		}
 
@@ -176,6 +209,7 @@ public class TicketController {
 		if (!existingTicketOpt.isPresent()) {
 			bindingResult.rejectValue("id", "error.ticket", "Ticket non trovato.");
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			model.addAttribute("categories", categoryRepository.findAll());
 			return "ticket/edit_ticket";
 		}
 
@@ -188,6 +222,7 @@ public class TicketController {
 		existingTicket.setDescriptionTicket(formTicket.getDescriptionTicket());
 
 		formTicket.setUser(selectedOperator.get());
+		formTicket.setCategory(selectedCategory.get());
 		ticketRepository.save(formTicket);
 
 		// Redirect alla pagina di dettaglio del ticket aggiornato

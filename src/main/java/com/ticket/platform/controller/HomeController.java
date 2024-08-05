@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.ticket.platform.model.Ticket;
 import com.ticket.platform.model.User;
+import com.ticket.platform.repository.CategoryRepository;
 import com.ticket.platform.repository.TicketRepository;
 import com.ticket.platform.repository.UserRepository;
 
@@ -24,6 +25,9 @@ public class HomeController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	// VISIBILITA ADMIN/INDEX
 	@GetMapping("/admin/index")
@@ -34,7 +38,7 @@ public class HomeController {
 				|| authentication.getPrincipal().equals("anonymousUser")) {
 			return "redirect:/login";
 		}
-
+		model.addAttribute("categories", categoryRepository.findAll());
 		List<Ticket> tickets = ticketRepository.findAll();
 		model.addAttribute("list", tickets);
 		return "admin/index";

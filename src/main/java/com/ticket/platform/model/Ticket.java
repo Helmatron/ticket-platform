@@ -59,6 +59,9 @@ public class Ticket {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@ManyToOne
+	private Category category;
+
 	public Long getId() {
 		return id;
 	}
@@ -123,4 +126,11 @@ public class Ticket {
 		this.workProgress = workProgress;
 	}
 
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 }
