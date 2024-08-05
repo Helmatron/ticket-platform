@@ -17,7 +17,7 @@ function updateOperator(element) {
 	document.getElementById('operatorIdInput').value = element.getAttribute('data-id');
 }
 
-// RESET FORM E VAI A HOME
+// RESET FORM E VAI A HOME ADMIN
 function resetFormAdminHome() {
 	window.location.href = "/admin/index";
 }

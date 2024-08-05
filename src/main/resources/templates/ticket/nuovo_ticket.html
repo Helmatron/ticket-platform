@@ -38,7 +38,7 @@
 			<!-- TITLE -->
 			<div class="container-fluid">
 				<div class="row my-5">
-					<h1 class="text-center">Modifica il ticket</h1>
+					<h1 class="text-center">Crea un nuovo ticket</h1>
 				</div>
 
 				<!-- CONTEINER FORM -->
@@ -46,26 +46,25 @@
 					<div class="row col-12 col-sm-6 col-md-4 col-lg-5">
 
 						<!-- FORM -->
-						<form id="ticket-form" th:object="${ticket}" th:action="@{/admin/ticket/update_ticket}"
+						<form id="ticket-form" th:object="${ticket}" th:action="@{/ticket/nuovo_ticket}"
 							method="post" class="needs-validation" novalidate>
-							<input type="hidden" th:field="*{id}" />
 
 							<!-- TITOLO -->
 							<div class="mb-3">
-								<label for="titleTicket" class="form-label"><strong>Titolo</strong></label>
-								<input type="text" class="form-control" id="titleTicket" placeholder="Nome del ticket"
-									th:field="*{titleTicket}" required>
+								<label for="titleTicket" class="form-label"><strong>Titolo </strong></label>
+								<input type="text" class="form-control" id="titleTicket"
+									placeholder="Nome del nuovo ticket" th:field="*{titleTicket}" required>
 								<div class="invalid-feedback">
 									Inserisci il titolo del ticket.
 								</div>
-								<div th:if="${titleError}" class="text-danger mt-2" th:text="${titleError}"></div>
 							</div>
 
 							<!-- DESCRIZIONE -->
-							<label for="descriptionTicket" class="form-label"><strong>Descrizione</strong></label>
+							<label for="descriptionTicket" class="form-label"><strong>Descrizione </strong></label>
 							<div class="form-floating mb-3">
-								<textarea id="descriptionTicket" th:field="*{descriptionTicket}" class="form-control"
-									placeholder="Descrizione del ticket" style="height: 200px" required></textarea>
+								<textarea type="text" id="descriptionTicket" th:field="*{descriptionTicket}"
+									class="form-control" placeholder="Descrizione del ticket" style="height: 200px"
+									required></textarea>
 								<label for="descriptionTicket">Descrizione del ticket</label>
 								<div class="invalid-feedback">
 									Inserisci la descrizione del ticket.
@@ -74,7 +73,7 @@
 
 							<!-- DATA INIZIO -->
 							<div class="mb-3">
-								<label for="startDate" class="form-label"><strong>Data di Inizio</strong></label>
+								<label for="startDate" class="form-label"><strong>Data di Inizio </strong></label>
 								<input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
 								<div class="invalid-feedback">
 									Inserisci la data di inizio.
@@ -83,26 +82,10 @@
 
 							<!-- DATA FINE -->
 							<div class="mb-3">
-								<label for="endDate" class="form-label"><strong>Data di Fine</strong></label>
+								<label for="endDate" class="form-label"><strong>Data di Fine </strong></label>
 								<input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
 								<div class="invalid-feedback">
 									Inserisci la data di fine.
-								</div>
-							</div>
-
-
-							<!-- STATO TICKET -->
-							<div class="mb-3">
-								<label for="workProgress" class="form-label"><strong>Stato</strong></label>
-								<select class="form-select" id="workProgress" th:field="*{workProgress}" required>
-									<option value="">Seleziona lo stato</option>
-									<option value="APERTO" th:selected="*{workProgress} == 'APERTO'">Aperto</option>
-									<option value="IN LAVORAZIONE" th:selected="*{workProgress} == 'IN LAVORAZIONE'">In
-										lavorazione</option>
-									<option value="CHIUSO" th:selected="*{workProgress} == 'CHIUSO'">Chiuso</option>
-								</select>
-								<div class="invalid-feedback">
-									Seleziona lo stato del ticket.
 								</div>
 							</div>
 
@@ -126,11 +109,12 @@
 										</ul>
 									</div>
 									<input type="text" class="form-control" id="operatorNameInput" name="operatorName"
-										th:value="*{user.name} + ' ' + *{user.surname}" readonly required>
-									<input type="hidden" id="operatorIdInput" name="operatorId" th:value="*{user.id}">
+										readonly required>
+									<input type="hidden" id="operatorIdInput" name="operatorId">
 									<div class="invalid-feedback">
 										Seleziona un operatore.
 									</div>
+									<!-- messaggio di errore -->
 								</div>
 								<div th:if="${operatorError}" class="text-danger mt-2" th:text="${operatorError}"></div>
 							</div>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ticket.platform.model.Ticket;
@@ -24,6 +25,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("/ticket")
 public class TicketController {
 
 	@Autowired
@@ -32,7 +34,7 @@ public class TicketController {
 	private UserRepository userRepository;
 
 	// DETTAGLI TICKET
-	@GetMapping("/admin/ticket/dettagli_ticket/{id}")
+	@GetMapping("/dettagli_ticket/{id}")
 	public String findPizzaById(@PathVariable("id") Long id, Model model) {
 		Ticket ticket = ticketRepository.getReferenceById(id);
 		if (ticket != null) {
@@ -42,7 +44,7 @@ public class TicketController {
 
 			model.addAttribute("ticket", ticket);
 			model.addAttribute("findTicketById", true);
-			return "/admin/ticket/dettagli_ticket";
+			return "ticket/dettagli_ticket";
 
 		} else {
 
@@ -72,16 +74,16 @@ public class TicketController {
 	}
 
 	// CREA NUOVO TICKET
-	@GetMapping("/admin/ticket/nuovo_ticket")
+	@GetMapping("/nuovo_ticket")
 	public String creaTicket(Model model) {
 
 		model.addAttribute("ticket", new Ticket());
 		model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
 
-		return "admin/ticket/nuovo_ticket";
+		return "/ticket/nuovo_ticket";
 	}
 
-	@PostMapping("/admin/ticket/nuovo_ticket")
+	@PostMapping("/nuovo_ticket")
 	public String store(@Valid @ModelAttribute("ticket") Ticket formTicket,
 			@RequestParam(name = "operatorId", required = false) Long operatorId, BindingResult bindingResult,
 			Model model) {
@@ -91,14 +93,14 @@ public class TicketController {
 				model.addAttribute("operatorError", "Devi selezionare un operatore.");
 			}
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
-			return "admin/ticket/nuovo_ticket";
+			return "/ticket/nuovo_ticket";
 		}
 
 		Optional<User> selectedOperatorId = userRepository.findById(operatorId);
 		if (!selectedOperatorId.isPresent()) {
 			bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
-			return "admin/ticket/nuovo_ticket";
+			return "/ticket/nuovo_ticket";
 		}
 		User selectedOperator = selectedOperatorId.get();
 		formTicket.setUser(selectedOperator);
@@ -108,16 +110,16 @@ public class TicketController {
 	}
 
 	// MODIFICA TICKET
-	@GetMapping("/admin/ticket/edit_ticket/{id}")
+	@GetMapping("/edit_ticket/{id}")
 	public String editTicket(@PathVariable("id") Long id, Model model) {
 
 		model.addAttribute("ticket", ticketRepository.findById(id).get());
 		model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
 
-		return "admin/ticket/edit_ticket";
+		return "/ticket/edit_ticket";
 	}
 
-	@PostMapping("/admin/ticket/update_ticket")
+	@PostMapping("/edit_ticket")
 	public String updateTicket(@Valid @ModelAttribute("ticket") Ticket formTicket,
 			@RequestParam(name = "operatorId", required = false) Long operatorId, BindingResult bindingResult,
 			Model model) {
@@ -127,14 +129,14 @@ public class TicketController {
 				model.addAttribute("operatorError", "Devi selezionare un operatore.");
 			}
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
-			return "admin/ticket/edit_ticket";
+			return "ticket/edit_ticket";
 		}
 
 		Optional<User> selectedOperator = userRepository.findById(operatorId);
 		if (!selectedOperator.isPresent()) {
 			bindingResult.rejectValue("user", "error.ticket", "Operatore non trovato.");
 			model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
-			return "admin/ticket/edit_ticket";
+			return "ticket/edit_ticket";
 		}
 
 		formTicket.setUser(selectedOperator.get());
@@ -144,7 +146,7 @@ public class TicketController {
 
 	// DELETE TICKET
 
-	@DeleteMapping("/admin/ticket/edit_ticket/{id}")
+	@DeleteMapping("/edit_ticket/{id}")
 	@Transactional
 	public String deleteTicket(@PathVariable("id") Long id, Model model) {
 		Optional<Ticket> optionalTicket = ticketRepository.findById(id);

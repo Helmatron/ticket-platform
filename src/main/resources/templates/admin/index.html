@@ -60,7 +60,7 @@
 						<!-- SEARCH -->
 						<div class="col-lg-4 mt-3 mt-lg-0">
 							<div class="collapse d-lg-block" id="searchForm">
-								<form class="d-flex mt-3 mt-lg-0" th:action="@{/search}" method="get">
+								<form class="d-flex mt-3 mt-lg-0" th:action="@{/ticket/search}" method="get">
 									<input class="form-control me-2" type="search" placeholder="Cerca ticket per titolo"
 										aria-label="Search" name="titleTicket">
 									<button class="btn btn-outline-primary" type="submit">Cerca</button>
@@ -69,7 +69,7 @@
 						</div>
 
 						<div class="col-sm-12 col-lg-2 mt-lg-0 mt-3 d-flex justify-content-start justify-content-lg-end">
-							<a th:href="@{/admin/ticket/nuovo_ticket}" class="btn btn-primary">Nuovo Ticket</a>
+							<a th:href="@{/ticket/nuovo_ticket}" class="btn btn-primary">Nuovo Ticket</a>
 						</div>
 					</div>
 				</div>
@@ -88,7 +88,7 @@
 					</thead>
 					<tbody>
 						<tr th:each="ticket : ${list}">
-							<td> <a th:href="@{/admin/ticket/dettagli_ticket/{id}(id=${ticket.id})}"
+							<td> <a th:href="@{/ticket/dettagli_ticket/{id}(id=${ticket.id})}"
 									th:text="${ticket.titleTicket}">Titolo</a></td>
 							<td>
 								<span th:class="'stato-' + ${ticket.workProgress.toLowerCase().replace(' ', '-')}">

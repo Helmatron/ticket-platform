@@ -77,7 +77,7 @@ public class NoteController {
 			note.setTicket(ticketOpt.get());
 			note.setCreationDate(LocalDateTime.now());
 			noteRepository.save(note);
-			return "redirect:/admin/ticket/dettagli_ticket/" + note.getTicket().getId();
+			return "redirect:/ticket/dettagli_ticket/" + note.getTicket().getId();
 		} else {
 			model.addAttribute("error", "Utente non trovato");
 			return "error";
@@ -92,7 +92,7 @@ public class NoteController {
 			Note note = noteOpt.get();
 			Long ticketId = note.getTicket().getId();
 			noteRepository.delete(note);
-			return "redirect:/admin/ticket/dettagli_ticket/" + ticketId;
+			return "redirect:/ticket/dettagli_ticket/" + ticketId;
 		} else {
 			return "error";
 		}

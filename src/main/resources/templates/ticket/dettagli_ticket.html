@@ -99,9 +99,9 @@
 									<!-- BOTTONE -->
 									<div class="d-flex justify-content-between mt-auto mx-3">
 										<a th:href="@{/admin/index}" class="btn btn-primary">Indietro</a>
-										<a th:href="@{/admin/ticket/edit_ticket/{id}(id=${ticket.id})}"
+										<a th:href="@{/ticket/edit_ticket/{id}(id=${ticket.id})}"
 											class="btn btn-warning" style="color: white;">Modifica</a>
-										<form th:action="@{/admin/ticket/edit_ticket/{id}(id=${ticket.id})}"
+										<form th:action="@{/ticket/edit_ticket/{id}(id=${ticket.id})}"
 											method="post" onsubmit="return confirmDelete();">
 											<input type="hidden" name="_method" value="delete">
 											<button type="submit" class="btn btn-danger"
