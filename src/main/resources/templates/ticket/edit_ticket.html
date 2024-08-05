@@ -54,7 +54,7 @@
 							<div class="mb-3">
 								<label for="titleTicket" class="form-label"><strong>Titolo</strong></label>
 								<input type="text" class="form-control" id="titleTicket" placeholder="Nome del ticket"
-									th:field="*{titleTicket}" required>
+									th:field="*{titleTicket}" th:readonly="${isAdmin} ? false : true" required>
 								<div class="invalid-feedback">
 									Inserisci il titolo del ticket.
 								</div>
@@ -65,7 +65,8 @@
 							<label for="descriptionTicket" class="form-label"><strong>Descrizione</strong></label>
 							<div class="form-floating mb-3">
 								<textarea id="descriptionTicket" th:field="*{descriptionTicket}" class="form-control"
-									placeholder="Descrizione del ticket" style="height: 200px" required></textarea>
+									placeholder="Descrizione del ticket" style="height: 200px"
+									th:readonly="${isAdmin} ? false : true" required></textarea>
 								<label for="descriptionTicket">Descrizione del ticket</label>
 								<div class="invalid-feedback">
 									Inserisci la descrizione del ticket.
@@ -75,7 +76,8 @@
 							<!-- DATA INIZIO -->
 							<div class="mb-3">
 								<label for="startDate" class="form-label"><strong>Data di Inizio</strong></label>
-								<input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
+								<input type="date" class="form-control" id="startDate" th:field="*{startDate}"
+									th:readonly="${isAdmin} ? false : true" required>
 								<div class="invalid-feedback">
 									Inserisci la data di inizio.
 								</div>
@@ -84,12 +86,12 @@
 							<!-- DATA FINE -->
 							<div class="mb-3">
 								<label for="endDate" class="form-label"><strong>Data di Fine</strong></label>
-								<input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
+								<input type="date" class="form-control" id="endDate" th:field="*{endDate}"
+									th:readonly="${isAdmin} ? false : true" required>
 								<div class="invalid-feedback">
 									Inserisci la data di fine.
 								</div>
 							</div>
-
 
 							<!-- STATO TICKET -->
 							<div class="mb-3">
@@ -107,7 +109,7 @@
 							</div>
 
 							<!-- OPERATOR SELECTION -->
-							<div class="mb-3">
+							<div class="mb-3" th:readonly="${isAdmin} ? false : true">
 								<label for="operator"><strong>Operatore</strong></label>
 								<div class="input-group">
 									<div class="dropdown">

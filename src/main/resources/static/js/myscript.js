@@ -17,11 +17,15 @@ function updateOperator(element) {
 	document.getElementById('operatorIdInput').value = element.getAttribute('data-id');
 }
 
-// RESET FORM E VAI A HOME ADMIN
+// RESET FORM E VAI A TICKET
 function resetFormTicketReturn(ticketId) {
-    window.location.href = "/ticket/dettagli_ticket/" + ticketId;
+	window.location.href = "/ticket/dettagli_ticket/" + ticketId;
 }
 
+// RESET FORM E VAI A HOME
+function resetFormAdminHome() {
+	window.location.href = "/admin/index";
+}
 // Disabilita l'invio del form se ci sono campi non validi
 (function() {
 	'use strict'

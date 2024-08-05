@@ -8,7 +8,8 @@
 				Ticket Platform </a>
 
 			<a class="navbar-brand d-flex align-items-center" sec:authorize="hasAuthority('OPERATOR')"
-				href="/operator/index"><span class="me-2"><img th:src="@{/img/paperella.png}" alt="paperella"></span> My
+				th:href="@{/operator/dettagli_operatore/{id}(id=${operatorId})}"><span class="me-2"><img
+						th:src="@{/img/paperella.png}" alt="paperella"></span> My
 				Ticket Platform </a>
 
 			<!-- MASCOTTE -->
@@ -45,8 +46,12 @@
 					<div class="col-12 text-center">
 						<a class="nav-link d-lg-none mt-3" href="/admin/index"
 							sec:authorize="hasAuthority('ADMIN')"><strong>Home</strong></a>
-						<a class="nav-link d-lg-none mt-3" href="/operator/index"
+						<a class="dropdown-item" href="/operator/lista_operatori"
+							sec:authorize="hasAuthority('ADMIN')"><strong>Operatori</strong></a>
+						<a class="nav-link d-lg-none mt-3"
+							th:href="@{/operator/dettagli_operatore/{id}(id=${operatorId})}"
 							sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a>
+
 					</div>
 
 					<!-- LOGGED USER only large screen -->
@@ -71,8 +76,13 @@
 										<!-- Home Link -->
 										<li><a class="dropdown-item" href="/admin/index"
 												sec:authorize="hasAuthority('ADMIN')"><strong>Home</strong></a></li>
-										<li><a class="dropdown-item" href="/operator/index"
-												sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a></li>
+										<li> <a class="dropdown-item"
+												th:href="@{/operator/dettagli_operatore/{id}(id=${operatorId})}"
+												sec:authorize="hasAuthority('OPERATOR')"><strong>Home</strong></a>
+										</li>
+										<li><a class="dropdown-item" href="/operator/lista_operatori"
+												sec:authorize="hasAuthority('ADMIN')"><strong>Operatori</strong></a>
+										</li>
 									</ul>
 								</div>
 							</div>

@@ -11,12 +11,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
 
-	 @Bean
-	    SecurityFilterChain filterDashboard(HttpSecurity http) throws Exception {
-		 
-	        http.authorizeHttpRequests()
+	@Bean
+	SecurityFilterChain filterDashboard(HttpSecurity http) throws Exception {
+	    http.authorizeHttpRequests()
 	        .requestMatchers("/admin/**").hasAuthority("ADMIN")
-	        .requestMatchers("/operator/**").hasAuthority("OPERATOR")
+	        .requestMatchers("/operator/lista_operatori").hasAuthority("ADMIN")
+	        .requestMatchers("/operator/index").hasAuthority("OPERATOR")
+	        .requestMatchers("/operator/dettagli_operatore").authenticated()
 	        .requestMatchers("/note/**").authenticated()
 	        .requestMatchers("/ticket/nuovo_ticket").hasAnyAuthority("ADMIN")
 	        .requestMatchers("/ticket/dettagli_ticket").authenticated()
@@ -25,9 +26,9 @@ public class SecurityConfiguration {
 	        .anyRequest().authenticated()
 	        .and().formLogin().permitAll().defaultSuccessUrl("/default", true)
 	        .and().logout().permitAll();
-	 
-	        return http.build();
-	    }
+
+	    return http.build();
+	}
 	
 	@Bean
 	 DatabaseUserDetailsService userDetailsService() {
@@ -48,11 +49,4 @@ public class SecurityConfiguration {
 		
 		return authProvider;
 	}
-	
-	/*ANNOTAZIONE
-	 * .requestMatchers("/pizze","/pizze/nuova_pizza", "/pizze/edit_pizze", "/pizze/lista_pizze").hasAuthority("ADMIN")
-		.requestMatchers("/offerte", "/offerte/**").hasAuthority("ADMIN")
-		.requestMatchers("/ingredients", "/ingredients/**").hasAuthority("ADMIN")
-	 */
-	
 }

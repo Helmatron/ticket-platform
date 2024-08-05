@@ -92,14 +92,15 @@
 
 								<!-- BOTTONE -->
 								<div class="d-flex justify-content-between mt-auto mx-3">
-									<a th:href="@{/admin/index}" class="btn btn-primary">Indietro</a>
+									<a th:href="@{/admin/index}" class="btn btn-primary"
+										sec:authorize="hasAuthority('ADMIN')">Indietro</a>
 									<a th:href="@{/ticket/edit_ticket/{id}(id=${ticket.id})}" class="btn btn-warning"
 										style="color: white;">Modifica</a>
 									<form th:action="@{/ticket/edit_ticket/{id}(id=${ticket.id})}" method="post"
 										onsubmit="return confirmDelete();">
 										<input type="hidden" name="_method" value="delete">
-										<button type="submit" class="btn btn-danger"
-											id="delete-ticket-button">Elimina</button>
+										<button type="submit" class="btn btn-danger" id="delete-ticket-button"
+											sec:authorize="hasAuthority('ADMIN')">Elimina</button>
 									</form>
 								</div>
 							</div>
@@ -110,6 +111,7 @@
 					<div class="col-md-5 mb-4 d-flex">
 						<div class="card shadow py-2 flex-fill">
 							<div class="card-body d-flex flex-column justify-content-between w-100">
+
 								<!-- TITLE DESCRIZIONE E STATO -->
 								<div class="container">
 									<div class="row">

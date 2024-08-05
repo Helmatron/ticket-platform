@@ -38,13 +38,20 @@ public class NoteController {
 	private UserRepository userRepository;
 
 	@GetMapping("/nuova_nota")
-	public String showCreateNoteForm(@RequestParam("ticketId") Long ticketId, Model model) {
+	public String showCreateNoteForm(@RequestParam("ticketId") Long ticketId, Model model, Principal principal) {
 		Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
 		if (ticketOpt.isPresent()) {
 			Ticket ticket = ticketOpt.get();
 			Note note = new Note();
 			note.setTicket(ticket);
 			model.addAttribute("note", note);
+
+			// Aggiungi l'operatorId al modello per far funzionare tasto home
+			Optional<User> userOpt = userRepository.findByMail(principal.getName());
+			if (userOpt.isPresent()) {
+				model.addAttribute("operatorId", userOpt.get().getId());
+			}
+
 			return "note/nuova_nota";
 		} else {
 			model.addAttribute("error", "Ticket non trovato");

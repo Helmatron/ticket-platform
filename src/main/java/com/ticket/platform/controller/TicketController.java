@@ -1,9 +1,12 @@
 package com.ticket.platform.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +38,7 @@ public class TicketController {
 
 	// DETTAGLI TICKET
 	@GetMapping("/dettagli_ticket/{id}")
-	public String findPizzaById(@PathVariable("id") Long id, Model model) {
+	public String findTicketById(@PathVariable("id") Long id, Model model, Principal principal) {
 		Ticket ticket = ticketRepository.getReferenceById(id);
 		if (ticket != null) {
 
@@ -44,6 +47,13 @@ public class TicketController {
 
 			model.addAttribute("ticket", ticket);
 			model.addAttribute("findTicketById", true);
+
+			// Aggiungi l'operatorId al modello per far funzionare tasto home
+			Optional<User> userOpt = userRepository.findByMail(principal.getName());
+			if (userOpt.isPresent()) {
+				model.addAttribute("operatorId", userOpt.get().getId());
+			}
+
 			return "ticket/dettagli_ticket";
 
 		} else {
@@ -111,12 +121,34 @@ public class TicketController {
 
 	// MODIFICA TICKET
 	@GetMapping("/edit_ticket/{id}")
-	public String editTicket(@PathVariable("id") Long id, Model model) {
+	public String editTicket(@PathVariable("id") Long id, Model model, Principal principal) {
+		Optional<Ticket> ticketOpt = ticketRepository.findById(id);
+		if (ticketOpt.isPresent()) {
+			Ticket ticket = ticketOpt.get();
+			model.addAttribute("ticket", ticket);
 
-		model.addAttribute("ticket", ticketRepository.findById(id).get());
-		model.addAttribute("users", userRepository.findByRolesName("OPERATOR"));
+			// Passa il ruolo dell'utente al modello
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			boolean isAdmin = authentication.getAuthorities().stream()
+					.anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"));
+			model.addAttribute("isAdmin", isAdmin);
 
-		return "/ticket/edit_ticket";
+			// Aggiungi l'elenco degli utenti solo se l'utente è un admin
+			if (isAdmin) {
+				List<User> users = userRepository.findByRolesName("OPERATOR");
+				model.addAttribute("users", users);
+			}
+
+			// Aggiungi l'operatorId al modello per far funzionare tasto home
+			Optional<User> userOpt = userRepository.findByMail(principal.getName());
+			if (userOpt.isPresent()) {
+				model.addAttribute("operatorId", userOpt.get().getId());
+			}
+
+			return "ticket/edit_ticket";
+		} else {
+			return "redirect:/error";
+		}
 	}
 
 	@PostMapping("/edit_ticket")
@@ -157,9 +189,9 @@ public class TicketController {
 
 		formTicket.setUser(selectedOperator.get());
 		ticketRepository.save(formTicket);
-		
+
 		// Redirect alla pagina di dettaglio del ticket aggiornato
-	    return "redirect:/ticket/dettagli_ticket/" + existingTicket.getId();
+		return "redirect:/ticket/dettagli_ticket/" + existingTicket.getId();
 	}
 
 	// DELETE TICKET

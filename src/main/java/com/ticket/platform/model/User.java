@@ -65,7 +65,7 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Note> notes;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles;
 
@@ -164,5 +164,22 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
+
+	public boolean changeWorkStatus() {
+		for (Ticket ticket : tickets) {
+			if (!ticket.getWorkProgress().equals("CHIUSO")) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean hasOpenTickets() {
+		for (Ticket ticket : tickets) {
+			if (!ticket.getWorkProgress().equals("CHIUSO")) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -48,4 +48,16 @@ footer {
 	font-weight: 700;
     color: red;
 }
+
+/* Stato in lavorazione */
+.stato-attivo {
+	font-weight: 700;
+    color: green;
+}
+
+/* Stato chiuso */
+.stato-inattivo {
+	font-weight: 700;
+    color: red;
+}
     
