@@ -49,6 +49,7 @@ public class Ticket {
 
 	@NotBlank(message = "Lo stato non può essere Null")
 	@Pattern(regexp = "^(APERTO|IN LAVORAZIONE|CHIUSO)$", message = "Lo stato deve essere uno tra 'Aperto', 'In lavorazione' o 'Chiuso'")
+	@Size(max = 20, message = "Il work progess può avere massimo 20 caratteri")
 	@Column(name = "work_progress", nullable = false)
 	private String workProgress = "APERTO";
 
