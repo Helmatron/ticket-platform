@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,14 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.ticket.platform.model.Ticket;
 import com.ticket.platform.model.User;
 import com.ticket.platform.repository.TicketRepository;
 import com.ticket.platform.repository.UserRepository;
 
-import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 
 @Controller
@@ -48,6 +47,17 @@ public class OperatorController {
 		if (userOpt.isPresent()) {
 			User user = userOpt.get();
 			List<Ticket> tickets = ticketRepository.findByUserId(user.getId());
+
+			// Verifica se l'utente autenticato è un admin
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			boolean isAdmin = authentication.getAuthorities().stream()
+					.anyMatch(role -> role.getAuthority().equals("ADMIN"));
+
+			// Se non è admin, verifica che l'utente loggato stia accedendo ai propri
+			// dettagli
+			if (!isAdmin && !user.getMail().equals(principal.getName())) {
+				return "redirect:/error";
+			}
 
 			// Imposta lo stato dell'operatore su attivo se ha ticket aperti
 			boolean hasOpenTickets = tickets.stream().anyMatch(ticket -> !ticket.getWorkProgress().equals("CHIUSO"));
@@ -97,7 +107,9 @@ public class OperatorController {
 	@GetMapping("/edit_operatore/{id}")
 	public String editOperator(@PathVariable("id") Long id, Model model, Principal principal) {
 		Optional<User> userOpt = userRepository.findById(id);
+
 		if (userOpt.isPresent()) {
+
 			// Verifica che l'utente loggato stia modificando solo i propri dati
 			if (!userOpt.get().getMail().equals(principal.getName())) {
 				return "redirect:/error";
