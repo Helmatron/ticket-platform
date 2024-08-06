@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,15 +58,19 @@ public class Ticket {
 	@Column(name = "work_progress", nullable = false)
 	private String workProgress = "APERTO";
 
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	@JsonProperty("category")
+	private Category category;
+
 	@OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	private List<Note> notes = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+	@JsonProperty("Operator")
 	private User user;
-
-	@ManyToOne
-	private Category category;
 
 	public Long getId() {
 		return id;

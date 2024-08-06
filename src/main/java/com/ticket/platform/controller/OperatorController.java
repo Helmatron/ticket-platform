@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ticket.platform.model.Ticket;
 import com.ticket.platform.model.User;
 import com.ticket.platform.repository.TicketRepository;
 import com.ticket.platform.repository.UserRepository;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 
 @Controller

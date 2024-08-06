@@ -23,6 +23,7 @@ public class SecurityConfiguration {
 	        .requestMatchers("/ticket/dettagli_ticket").authenticated()
 	        .requestMatchers("/ticket/edit_ticket").authenticated()
 	        .requestMatchers("/resources/**", "/css/**", "/js/**", "/login").permitAll()
+	        .requestMatchers("/api/ticket/**").permitAll()
 	        .anyRequest().authenticated()
 	        .and().formLogin().permitAll().defaultSuccessUrl("/default", true)
 	        .and().logout().permitAll();

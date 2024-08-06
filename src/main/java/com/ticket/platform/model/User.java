@@ -6,6 +6,10 @@ import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,50 +27,62 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 
 	@NotBlank(message = "Il nome non può essere Null")
 	@Size(max = 100, message = "il nome non può avere più di 100 caratteri")
 	@Column(nullable = false)
+	@JsonProperty("name")
 	private String name;
 
 	@NotBlank(message = "Il cognome non può essere Null")
 	@Size(max = 100, message = "il cognome non può avere più di 100 caratteri")
 	@Column(nullable = false)
+	@JsonProperty("surname")
 	private String surname;
 
 	@NotNull(message = "la data di nascita non può essere Null")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "birth_date", nullable = false)
+	@JsonIgnore
 	private LocalDate birthDate;
 
 	@NotBlank(message = "L'indirizzo di domicilio non può essere Null")
 	@Column(nullable = false)
+	@JsonIgnore
 	private String address;
 
 	@NotBlank(message = "Il numero di telefono non può essere Null")
 	@Size(min = 8, max = 16, message = "I numeri di telefono devono avere un numero di caratteri compresi fra 8 e 16")
 	@Column(name = "phone_number", nullable = false)
+	@JsonIgnore
 	private String phoneNumber;
 
 	@NotBlank(message = "L'e-mail non può essere Null")
 	@Column(nullable = false)
+	@JsonIgnore
 	private String mail;
 
 	@NotBlank(message = "la password non può essere Null")
 	@Column(nullable = false)
+	@JsonIgnore
 	private String password;
 
 	@Column(nullable = false)
+	@JsonIgnore
 	private Boolean workStatus;
 
 	@OneToMany(mappedBy = "user")
+	@JsonBackReference
 	private List<Ticket> tickets;
 
 	@OneToMany(mappedBy = "user")
+	@JsonIgnore
 	private List<Note> notes;
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@JsonIgnore
 	private Set<Role> roles;
 
 	public Long getId() {

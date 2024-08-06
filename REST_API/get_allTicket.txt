@@ -1,0 +1,139 @@
+GET: http://localhost:8080/api/ticket
+
+[
+    {
+        "id": 1,
+        "titleTicket": "Blocco all'Avvio!!",
+        "descriptionTicket": "L'applicazione si blocca all'avvio a causa di un file DLL mancante.",
+        "startDate": "2024-08-01",
+        "endDate": "2024-08-31",
+        "workProgress": "APERTO",
+        "category": {
+            "name": "Software"
+        },
+        "Operator": {
+            "name": "Giada",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 2,
+        "titleTicket": "Problema di Reimpostazione Password",
+        "descriptionTicket": "Gli utenti non possono reimpostare le loro password; il link di reimpostazione è rotto.",
+        "startDate": "2024-09-01",
+        "endDate": "2024-09-15",
+        "workProgress": "CHIUSO",
+        "category": {
+            "name": "User Management"
+        },
+        "Operator": {
+            "name": "Roberto",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 3,
+        "titleTicket": "Problema di Connettività di Rete",
+        "descriptionTicket": "Connettività di rete intermittente che colpisce tutti gli utenti in ufficio.",
+        "startDate": "2024-09-10",
+        "endDate": "2024-10-05",
+        "workProgress": "APERTO",
+        "category": {
+            "name": "Network"
+        },
+        "Operator": {
+            "name": "Roberto",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 4,
+        "titleTicket": "Fallimento Invio Email",
+        "descriptionTicket": "Le email non vengono inviate dal server di posta; rimangono nella posta in uscita.",
+        "startDate": "2024-10-15",
+        "endDate": "2024-11-01",
+        "workProgress": "CHIUSO",
+        "category": {
+            "name": "Software"
+        },
+        "Operator": {
+            "name": "Giada",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 5,
+        "titleTicket": "Problema di Prestazioni del Database",
+        "descriptionTicket": "Le prestazioni del database sono significativamente lente durante le ore di punta.",
+        "startDate": "2024-11-01",
+        "endDate": "2024-11-20",
+        "workProgress": "CHIUSO",
+        "category": {
+            "name": "Software"
+        },
+        "Operator": {
+            "name": "Giada",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 6,
+        "titleTicket": "Errore 500 Internal Server",
+        "descriptionTicket": "Il sito web mostra un errore 500 Internal Server Error nella pagina di login.",
+        "startDate": "2024-11-25",
+        "endDate": "2024-12-10",
+        "workProgress": "APERTO",
+        "category": {
+            "name": "Network"
+        },
+        "Operator": {
+            "name": "Roberto",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 7,
+        "titleTicket": "Fallimento Backup",
+        "descriptionTicket": "Il processo di backup fallisce a causa di spazio di archiviazione insufficiente sul server.",
+        "startDate": "2024-12-05",
+        "endDate": "2024-12-25",
+        "workProgress": "APERTO",
+        "category": {
+            "name": "Software"
+        },
+        "Operator": {
+            "name": "Roberto",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 8,
+        "titleTicket": "Problema Software Antivirus",
+        "descriptionTicket": "Il software antivirus causa blocchi di sistema dopo l'ultimo aggiornamento.",
+        "startDate": "2025-01-01",
+        "endDate": "2025-01-15",
+        "workProgress": "CHIUSO",
+        "category": {
+            "name": "Software"
+        },
+        "Operator": {
+            "name": "Giada",
+            "surname": "Fantasia"
+        }
+    },
+    {
+        "id": 9,
+        "titleTicket": "Problema Blocco Account",
+        "descriptionTicket": "Gli account utente vengono bloccati frequentemente a causa di tentativi di accesso falliti.",
+        "startDate": "2025-01-20",
+        "endDate": "2025-02-01",
+        "workProgress": "CHIUSO",
+        "category": {
+            "name": "User Management"
+        },
+        "Operator": {
+            "name": "Giada",
+            "surname": "Fantasia"
+        }
+    }
+]
